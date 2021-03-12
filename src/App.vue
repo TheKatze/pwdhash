@@ -1,32 +1,49 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </div>
+  <v-app>
+    <v-app-bar app dark elevate-on-scroll>
+      <h2>pwdhash</h2>
+
+      <v-spacer />
+      <v-btn @click="setPassword('')" v-if="isUnlocked">
+        Lock
+      </v-btn>
+      <v-btn color="primary" @click="$refs.dialog.open()" v-else>
+        Unlock
+      </v-btn>
+    </v-app-bar>
+    <v-main>
+      <router-view />
+      <password-dialog ref="dialog" />
+    </v-main>
+  </v-app>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+import { MutationMethod } from "vuex/types";
 
-#nav {
-  padding: 30px;
+import { namespace } from "vuex-class";
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+import PasswordDialog from "@/components/PasswordDialog.vue";
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+const main = namespace("main");
+
+@Component({
+  components: {
+    PasswordDialog,
+  },
+})
+export default class App extends Vue {
+  @main.Getter
+  public isUnlocked!: boolean;
+
+  @main.Mutation
+  public setPassword!: MutationMethod;
+
+  created() {
+    this.$vuetify.theme.dark = true;
   }
 }
-</style>
+</script>
+
+<style lang="scss" scoped></style>
