@@ -3,22 +3,24 @@
     <v-card-title>
       {{ data.title }}
       <v-spacer />
-      <v-icon left> mdi-pencil </v-icon>
-      <v-icon right @click="removePasswordEntry(data.id)" id="delete">
-        mdi-close
-      </v-icon>
+      <v-btn :disabled="!isUnlocked" class="mr-3" icon><v-icon> mdi-pencil </v-icon></v-btn>
+      <v-btn :disabled="!isUnlocked" icon @click="removePasswordEntry(data.id)" id="delete">
+        <v-icon>
+          mdi-close
+        </v-icon>
+      </v-btn>
     </v-card-title>
     <v-card-subtitle> {{ data.url }} </v-card-subtitle>
     <v-card-actions v-if="isUnlocked">
       <v-text-field
-        v-model="generatedPassword"
+        v-model="shownPassword"
         outlined
         readonly
         :type="isVisible ? 'text' : 'password'"
         label="Password"
       >
         <template v-slot:append>
-          <v-icon @click="isVisible = !isVisible">
+          <v-icon @click="togglePassword()">
             {{ isVisible ? "mdi-eye" : "mdi-eye-off" }}
           </v-icon>
         </template>
@@ -32,15 +34,16 @@
 
 <script lang="ts">
 import PasswordEntryData from "@/data/passwordEntryData";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { MutationMethod } from "vuex/types";
+
+import pbkdf2 from "pbkdf2";
 
 import { namespace } from "vuex-class";
 
 const main = namespace("main");
 const passwords = namespace("passwords");
 
-import forge from "node-forge";
-import { MutationMethod } from "vuex/types";
 
 @Component
 export default class PasswordEntry extends Vue {
@@ -55,15 +58,31 @@ export default class PasswordEntry extends Vue {
   @passwords.Mutation
   public removePasswordEntry!: MutationMethod;
 
-  isVisible = false;
+  isVisible: boolean | null = null;
+
+  shownPassword = "thisIsAPlaceholderPassword"
 
   get generatedPassword(): string {
-    const hash = forge.hmac.create();
+    const key = pbkdf2.pbkdf2Sync(this.password, this.data.url, 10000, 32, "sha512");
 
-    hash.start("sha256", this.password);
-    hash.update(this.data.url);
+    return key.toString("base64");
+  }
 
-    return btoa(hash.digest().bytes());
+  @Watch("isUnlocked")
+  onLock(value: boolean, oldValue: boolean | null) {
+    if (value) {
+      this.isVisible = null;
+      this.shownPassword = "thisIsAPlaceholderPassword"
+    }
+  }
+  
+
+  togglePassword() {
+    if (this.isVisible === null) {
+      this.shownPassword = this.generatedPassword;
+    }
+
+    this.isVisible = !this.isVisible;
   }
 
   copyToClipboard() {
