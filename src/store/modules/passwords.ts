@@ -4,7 +4,12 @@ import { VuexModule, Module, Mutation, Action } from "vuex-module-decorators";
 @Module({ namespaced: true, name: "passwords" })
 export default class Passwords extends VuexModule {
   public passwordList: PasswordEntryData[] = [
-    { id: 0, title: "Google", url: "www.google.com", format: null },
+    {
+      id: 0,
+      username: "google@gmail.com",
+      url: "www.google.com",
+      format: null,
+    },
   ];
 
   @Mutation

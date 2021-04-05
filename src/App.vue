@@ -10,7 +10,7 @@
         </v-list-item>
         <v-list-item link to="/about">
           <v-list-item-icon>
-            <v-icon>mdi-magnify</v-icon>
+            <v-icon>mdi-information</v-icon>
           </v-list-item-icon>
           <v-list-item-content> About </v-list-item-content>
         </v-list-item>

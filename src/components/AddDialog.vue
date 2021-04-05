@@ -21,8 +21,8 @@
         </v-toolbar>
         <v-card-text>
           <v-subheader> Entry </v-subheader>
-          <v-text-field outlined label="Title" v-model="title" />
           <v-text-field outlined label="URL" v-model="url" />
+          <v-text-field outlined label="Username" v-model="username" />
           <!-- <v-subheader> Options </v-subheader>
           <v-slider thumb-label label="Length" min="8" max="64" />
           <v-switch label="Force Special Characters" /> -->
@@ -46,17 +46,17 @@ export default class AddDialog extends Vue {
 
   public isOpen = false;
 
-  public title = "";
   public url = "";
+  public username = "";
 
   open() {
     this.isOpen = true;
   }
 
   add() {
-    this.addPasswordEntry({ title: this.title, url: this.url });
+    this.addPasswordEntry({ url: this.url, username: this.username });
 
-    this.title = "";
+    this.username = "";
     this.url = "";
 
     this.isOpen = false;

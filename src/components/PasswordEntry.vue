@@ -1,16 +1,23 @@
 <template>
   <v-card min-width="300">
     <v-card-title>
-      {{ data.title }}
+      {{ data.url }}
       <v-spacer />
-      <v-btn :disabled="!isUnlocked" class="mr-3" icon><v-icon> mdi-pencil </v-icon></v-btn>
-      <v-btn :disabled="!isUnlocked" icon @click="removePasswordEntry(data.id)" id="delete">
+      <v-btn :disabled="!isUnlocked" class="mr-3" icon>
+        <v-icon> mdi-pencil </v-icon>
+      </v-btn>
+      <v-btn
+        :disabled="!isUnlocked"
+        icon
+        @click="removePasswordEntry(data.id)"
+        id="delete"
+      >
         <v-icon>
           mdi-close
         </v-icon>
       </v-btn>
     </v-card-title>
-    <v-card-subtitle> {{ data.url }} </v-card-subtitle>
+    <v-card-subtitle> {{ data.username }} </v-card-subtitle>
     <v-card-actions v-if="isUnlocked">
       <v-text-field
         v-model="shownPassword"
@@ -44,7 +51,6 @@ import { namespace } from "vuex-class";
 const main = namespace("main");
 const passwords = namespace("passwords");
 
-
 @Component
 export default class PasswordEntry extends Vue {
   @Prop() data!: PasswordEntryData;
@@ -60,10 +66,16 @@ export default class PasswordEntry extends Vue {
 
   isVisible: boolean | null = null;
 
-  shownPassword = "thisIsAPlaceholderPassword"
+  shownPassword = "thisIsAPlaceholderPassword";
 
   get generatedPassword(): string {
-    const key = pbkdf2.pbkdf2Sync(this.password, this.data.url, 10000, 32, "sha512");
+    const key = pbkdf2.pbkdf2Sync(
+      this.password,
+      this.data.url,
+      10000,
+      32,
+      "sha512"
+    );
 
     return key.toString("base64");
   }
@@ -72,10 +84,9 @@ export default class PasswordEntry extends Vue {
   onLock(value: boolean, oldValue: boolean | null) {
     if (value) {
       this.isVisible = null;
-      this.shownPassword = "thisIsAPlaceholderPassword"
+      this.shownPassword = "thisIsAPlaceholderPassword";
     }
   }
-  
 
   togglePassword() {
     if (this.isVisible === null) {

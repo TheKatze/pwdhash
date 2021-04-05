@@ -2,8 +2,8 @@ import FormattingRules from "./formattingRules";
 
 export default interface PasswordEntryData {
   id: number;
-  title: string;
   url: string;
+  username: string;
 
   format: FormattingRules | null;
 }
