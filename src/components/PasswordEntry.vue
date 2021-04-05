@@ -1,11 +1,7 @@
 <template>
   <v-card min-width="300">
     <v-card-title>
-      {{ data.url }}
-      <v-spacer />
-      <v-btn :disabled="!isUnlocked" class="mr-3" icon>
-        <v-icon> mdi-pencil </v-icon>
-      </v-btn>
+      {{ data.url }}<v-spacer />
       <v-btn
         :disabled="!isUnlocked"
         icon
@@ -17,7 +13,7 @@
         </v-icon>
       </v-btn>
     </v-card-title>
-    <v-card-subtitle> {{ data.username }} </v-card-subtitle>
+    <v-card-subtitle>{{ data.username }}</v-card-subtitle>
     <v-card-actions v-if="isUnlocked">
       <v-text-field
         v-model="shownPassword"
@@ -71,7 +67,7 @@ export default class PasswordEntry extends Vue {
   get generatedPassword(): string {
     const key = pbkdf2.pbkdf2Sync(
       this.password,
-      this.data.url,
+      this.data.url + this.data.username,
       10000,
       32,
       "sha512"

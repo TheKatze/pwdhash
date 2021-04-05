@@ -3,19 +3,18 @@ import { VuexModule, Module, Mutation, Action } from "vuex-module-decorators";
 
 @Module({ namespaced: true, name: "passwords" })
 export default class Passwords extends VuexModule {
-  public passwordList: PasswordEntryData[] = [
-    {
-      id: 0,
-      username: "google@gmail.com",
-      url: "www.google.com",
-      format: null,
-    },
-  ];
+  private localStorage = window.localStorage;
+
+  public passwordList: PasswordEntryData[] = JSON.parse(
+    localStorage.getItem("entries") ?? "[]"
+  );
 
   @Mutation
   public addPasswordEntry(entry: PasswordEntryData): void {
     entry.id = this.passwordList.length;
     this.passwordList.push(entry);
+
+    localStorage.setItem("entries", JSON.stringify(this.passwordList));
   }
 
   @Mutation
@@ -25,5 +24,7 @@ export default class Passwords extends VuexModule {
     this.passwordList.forEach((element, i) => {
       element.id = i;
     });
+
+    localStorage.setItem("entries", JSON.stringify(this.passwordList));
   }
 }
