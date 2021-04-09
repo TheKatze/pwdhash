@@ -23,9 +23,9 @@
           <v-subheader> Entry </v-subheader>
           <v-text-field outlined label="URL" v-model="url" />
           <v-text-field outlined label="Username" v-model="username" />
-          <!-- <v-subheader> Options </v-subheader>
-          <v-slider thumb-label label="Length" min="8" max="64" />
-          <v-switch label="Force Special Characters" /> -->
+          <v-subheader> Options </v-subheader>
+          <v-slider thumb-label label="Length" min="8" max="32" v-model="length" />
+          <v-switch label="Remove Special Characters" v-model="removeSpecialCharacters" />
         </v-card-text>
       </v-card>
     </template>
@@ -48,6 +48,9 @@ export default class AddDialog extends Vue {
 
   public url = "";
   public username = "";
+
+  public length = 32;
+  public removeSpecialCharacters = false;
 
   open() {
     this.isOpen = true;

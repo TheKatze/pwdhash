@@ -40,9 +40,6 @@ const main = namespace("main");
 
 @Component
 export default class PasswordDialog extends Vue {
-  @main.State
-  public password!: string;
-
   @main.Mutation
   public setPassword!: MutationMethod;
 

@@ -1,6 +1,10 @@
 <template>
   <v-app>
-    <v-navigation-drawer app v-model="navDrawer">
+    <v-navigation-drawer
+      :expand-on-hover="!$vuetify.breakpoint.mobile"
+      app
+      v-model="navDrawer"
+    >
       <v-list>
         <v-list-item link to="/">
           <v-list-item-icon>
@@ -8,17 +12,35 @@
           </v-list-item-icon>
           <v-list-item-content> App </v-list-item-content>
         </v-list-item>
+        <v-list-item link to="/settings">
+          <v-list-item-icon>
+            <v-icon>mdi-cog</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content> Settings </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <template slot="append">
+        <v-list-item link href="https://github.com/TheKatze/pwdhash">
+          <v-list-item-icon>
+            <v-icon>mdi-github</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content> Contribute </v-list-item-content>
+        </v-list-item>
         <v-list-item link to="/about">
           <v-list-item-icon>
             <v-icon>mdi-information</v-icon>
           </v-list-item-icon>
           <v-list-item-content> About </v-list-item-content>
         </v-list-item>
-      </v-list>
+      </template>
     </v-navigation-drawer>
     <v-app-bar app dark elevate-on-scroll>
-      <v-app-bar-nav-icon @click="navDrawer = true" />
+      <v-app-bar-nav-icon
+        v-if="$vuetify.breakpoint.mobile"
+        @click="navDrawer = true"
+      />
       <h2>pwdhash</h2>
+      <sup> BETA </sup>
 
       <v-spacer />
       <span v-if="$route.path === '/'">
@@ -59,7 +81,7 @@ export default class App extends Vue {
   @main.Mutation
   public setPassword!: MutationMethod;
 
-  private navDrawer = false;
+  private navDrawer = null;
 
   created() {
     this.$vuetify.theme.dark = true;

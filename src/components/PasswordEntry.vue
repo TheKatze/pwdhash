@@ -1,5 +1,5 @@
 <template>
-  <v-card min-width="300">
+  <v-card min-width="300" :loading="isWorking">
     <v-card-title>
       {{ data.url }}<v-spacer />
       <v-btn
@@ -44,6 +44,15 @@ import pbkdf2 from "pbkdf2";
 
 import { namespace } from "vuex-class";
 
+const pbkdf2Async = (password: string, salt: string, iterations: number, keylen: number, digest: string) => {
+  return new Promise<string>((resolve, reject) => {
+    pbkdf2.pbkdf2(password, salt, iterations, keylen, digest, (err, data) => {
+      if (err) return reject(err);
+      resolve(data.toString("base64"));
+    });
+  })
+}
+
 const main = namespace("main");
 const passwords = namespace("passwords");
 
@@ -60,20 +69,20 @@ export default class PasswordEntry extends Vue {
   @passwords.Mutation
   public removePasswordEntry!: MutationMethod;
 
+  isWorking = false;
+
   isVisible: boolean | null = null;
 
   shownPassword = "thisIsAPlaceholderPassword";
 
-  get generatedPassword(): string {
-    const key = pbkdf2.pbkdf2Sync(
+  get generatedPassword(): Promise<string> {
+    return pbkdf2Async(
       this.password,
       this.data.url + this.data.username,
-      10000,
+      100000,
       32,
       "sha512"
-    );
-
-    return key.toString("base64");
+      );
   }
 
   @Watch("isUnlocked")
@@ -84,16 +93,24 @@ export default class PasswordEntry extends Vue {
     }
   }
 
-  togglePassword() {
+  async getGeneratedPassword(): Promise<string> {
+    this.isWorking = true;
+    const pass = await this.generatedPassword;
+    this.isWorking = false;
+
+    return pass;
+  }
+
+  async togglePassword() {
     if (this.isVisible === null) {
-      this.shownPassword = this.generatedPassword;
+      this.shownPassword = await this.getGeneratedPassword();
     }
 
     this.isVisible = !this.isVisible;
   }
 
-  copyToClipboard() {
-    navigator.clipboard.writeText(this.generatedPassword);
+  async copyToClipboard() {
+    navigator.clipboard.writeText(await this.getGeneratedPassword());
   }
 }
 </script>
