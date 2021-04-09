@@ -40,6 +40,8 @@ import PasswordEntryData from "@/data/passwordEntryData";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { MutationMethod } from "vuex/types";
 
+import Formatter from "@/util/formatter";
+
 import pbkdf2 from "pbkdf2";
 
 import { namespace } from "vuex-class";
@@ -98,7 +100,7 @@ export default class PasswordEntry extends Vue {
     const pass = await this.generatedPassword;
     this.isWorking = false;
 
-    return pass;
+    return Formatter.format(pass, this.data.format);
   }
 
   async togglePassword() {
