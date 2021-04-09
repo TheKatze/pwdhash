@@ -46,7 +46,7 @@
       max-width="500"
       link
       target="_blank"
-      href="https://github.com/TheKatze/pwdhash/issues/new?assignees=TheKatze&labels=enhancement&template=feature_request.md&title="
+      href="https://github.com/TheKatze/pwdhash"
     >
       <v-card-title>
         Create a pull request
