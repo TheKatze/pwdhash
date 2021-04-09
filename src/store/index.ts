@@ -11,6 +11,6 @@ export default new Vuex.Store({
   modules: {
     main: Main,
     passwords: Passwords,
-    settings: Settings
+    settings: Settings,
   },
 });

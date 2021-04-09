@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import PasswordEntryData from "@/data/passwordEntryData";
-import Settings from "@/data/settings"
+import Settings from "@/data/settings";
 
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { MutationMethod } from "vuex/types";
@@ -49,14 +49,20 @@ import pbkdf2 from "pbkdf2";
 
 import { namespace } from "vuex-class";
 
-const pbkdf2Async = (password: string, salt: string, iterations: number, keylen: number, digest: string) => {
+const pbkdf2Async = (
+  password: string,
+  salt: string,
+  iterations: number,
+  keylen: number,
+  digest: string
+) => {
   return new Promise<string>((resolve, reject) => {
     pbkdf2.pbkdf2(password, salt, iterations, keylen, digest, (err, data) => {
       if (err) return reject(err);
       resolve(data.toString("base64"));
     });
-  })
-}
+  });
+};
 
 const main = namespace("main");
 const passwords = namespace("passwords");
@@ -76,7 +82,7 @@ export default class PasswordEntry extends Vue {
   public removePasswordEntry!: MutationMethod;
 
   @settingsModule.State
-  public settings!: Settings
+  public settings!: Settings;
 
   isWorking = false;
 
@@ -91,11 +97,11 @@ export default class PasswordEntry extends Vue {
       this.settings.iterations,
       this.settings.keylen,
       this.settings.digest
-      );
+    );
   }
 
   @Watch("isUnlocked")
-  async onLock(value: boolean, oldValue: boolean | null) {
+  async onLock(value: boolean) {
     if (value) {
       this.isVisible = null;
 

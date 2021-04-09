@@ -4,8 +4,10 @@
       <v-card class="mx-auto" max-width="500">
         <v-card-title>Welcome to pwdhash</v-card-title>
         <v-card-text>
-          You don't have any passwords saved on this device yet, do you want a quick introduction? <br />
-          If you're already familiar with pwdhash, just add a password and this box will disappear.
+          You don't have any passwords saved on this device yet, do you want a
+          quick introduction? <br />
+          If you're already familiar with pwdhash, just add a password and this
+          box will disappear.
         </v-card-text>
         <v-card-actions>
           <v-spacer />

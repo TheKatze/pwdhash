@@ -23,26 +23,22 @@
 
               <v-form :disabled="!enableDangerousSettings">
                 <v-slider
-                label="Iterations"
-                v-model="iterations"
-                min="100000"
-                max="5000000"
-                step="100000"
-                thumb-label
-              />
-              <v-slider
-                label="Key Length"
-                v-model="keylen"
-                min="16"
-                max="64"
-                step="16"
-                thumb-label
-              />
-              <v-select
-                label="Digest"
-                v-model="digest"
-                :items="allDigests"
-              />
+                  label="Iterations"
+                  v-model="iterations"
+                  min="100000"
+                  max="5000000"
+                  step="100000"
+                  thumb-label
+                />
+                <v-slider
+                  label="Key Length"
+                  v-model="keylen"
+                  min="16"
+                  max="64"
+                  step="16"
+                  thumb-label
+                />
+                <v-select label="Digest" v-model="digest" :items="allDigests" />
               </v-form>
             </v-expansion-panel-content>
           </v-expansion-panel>

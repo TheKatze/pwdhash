@@ -1,4 +1,4 @@
-import { VuexModule, Module, Mutation, Action } from "vuex-module-decorators";
+import { VuexModule, Module, Mutation } from "vuex-module-decorators";
 
 @Module({ namespaced: true, name: "main" })
 export default class Main extends VuexModule {
