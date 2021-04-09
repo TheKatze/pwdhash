@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="isOpen">
+  <v-dialog v-model="isOpen" max-width="500">
     <template v:slot:default>
       <v-card>
         <v-card-title> Unlock </v-card-title>

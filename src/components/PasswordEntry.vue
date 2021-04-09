@@ -37,9 +37,12 @@
 
 <script lang="ts">
 import PasswordEntryData from "@/data/passwordEntryData";
+import Settings from "@/data/settings"
+
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { MutationMethod } from "vuex/types";
 
+import SnackbarService from "@/util/snackbarService";
 import Formatter from "@/util/formatter";
 
 import pbkdf2 from "pbkdf2";
@@ -57,6 +60,7 @@ const pbkdf2Async = (password: string, salt: string, iterations: number, keylen:
 
 const main = namespace("main");
 const passwords = namespace("passwords");
+const settingsModule = namespace("settings");
 
 @Component
 export default class PasswordEntry extends Vue {
@@ -71,6 +75,9 @@ export default class PasswordEntry extends Vue {
   @passwords.Mutation
   public removePasswordEntry!: MutationMethod;
 
+  @settingsModule.State
+  public settings!: Settings
+
   isWorking = false;
 
   isVisible: boolean | null = null;
@@ -81,17 +88,22 @@ export default class PasswordEntry extends Vue {
     return pbkdf2Async(
       this.password,
       this.data.url + this.data.username,
-      100000,
-      32,
-      "sha512"
+      this.settings.iterations,
+      this.settings.keylen,
+      this.settings.digest
       );
   }
 
   @Watch("isUnlocked")
-  onLock(value: boolean, oldValue: boolean | null) {
+  async onLock(value: boolean, oldValue: boolean | null) {
     if (value) {
       this.isVisible = null;
-      this.shownPassword = "thisIsAPlaceholderPassword";
+
+      if (this.settings.eagerLoading) {
+        this.shownPassword = await this.getGeneratedPassword();
+      } else {
+        this.shownPassword = "thisIsAPlaceholderPassword";
+      }
     }
   }
 
@@ -113,6 +125,7 @@ export default class PasswordEntry extends Vue {
 
   async copyToClipboard() {
     navigator.clipboard.writeText(await this.getGeneratedPassword());
+    SnackbarService.open();
   }
 }
 </script>

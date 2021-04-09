@@ -1,15 +1,15 @@
 <template>
   <v-container class="about">
-    <v-card>
+    <v-card class="mx-auto my-2" max-width="500">
       <v-card-title>
         About pwdhash
       </v-card-title>
       <v-card-text>
         pwdhash is a password manager that does not save your passwords, but instead generates unique passwords for every website on the fly. <br />
-        It is heavily inspired by <a href="https://pwdhash.github.io/website/">Stanford PwdHash</a> and works very similarly, with some improvements.
+        It is heavily inspired by <a href="https://pwdhash.github.io/website/" target="_blank">Stanford PwdHash</a> and works very similarly, with some improvements.
       </v-card-text>
     </v-card>
-    <v-card>
+    <v-card class="mx-auto my-2" max-width="500">
       <v-card-title>
         How it works
       </v-card-title>
@@ -19,7 +19,7 @@
         So if one of your online services gets compromised, your other accounts stay safe.
       </v-card-text>
     </v-card>
-    <v-card>
+    <v-card class="mx-auto my-2" max-width="500">
       <v-card-title>
         How it really works
       </v-card-title>

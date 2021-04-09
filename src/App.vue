@@ -20,7 +20,7 @@
         </v-list-item>
       </v-list>
       <template slot="append">
-        <v-list-item link href="https://github.com/TheKatze/pwdhash">
+        <v-list-item link to="/contribute">
           <v-list-item-icon>
             <v-icon>mdi-github</v-icon>
           </v-list-item-icon>

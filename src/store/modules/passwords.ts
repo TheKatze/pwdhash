@@ -1,10 +1,10 @@
 import PasswordEntryData from "@/data/passwordEntryData";
-import { VuexModule, Module, Mutation, Action } from "vuex-module-decorators";
+import { VuexModule, Module, Mutation } from "vuex-module-decorators";
+
+const localStorage = window.localStorage;
 
 @Module({ namespaced: true, name: "passwords" })
 export default class Passwords extends VuexModule {
-  private localStorage = window.localStorage;
-
   public passwordList: PasswordEntryData[] = JSON.parse(
     localStorage.getItem("entries") ?? "[]"
   );
